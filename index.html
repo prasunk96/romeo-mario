@@ -496,7 +496,7 @@ let W, H;
 let gameState = 'start';
 let cameraX = 0;
 let roses = 0;
-let lives = 3;
+let lives = 5;
 let player, platforms, hazards, collectibles, decorations, flagPole, princess;
 let keys = {};
 let animFrame = 0;
@@ -2065,9 +2065,9 @@ function startGame() {
   }
 
   roses = 0;
-  lives = 3;
+  lives = 5;
   roseCountEl.textContent = '0';
-  lifeCountEl.textContent = '3';
+  lifeCountEl.textContent = '5';
   endSequencePhase = 0;
   endSequenceTimer = 0;
   invincibleTimer = 0;
