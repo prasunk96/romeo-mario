@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Romeo Mario - Valentine's Quest</title>
+<title>Mario's Run for Love</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Dancing+Script:wght@700&display=swap');
 
@@ -273,6 +273,22 @@
     align-items: center; justify-content: center;
     z-index: 300;
     background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #4a1942 100%);
+    overflow: hidden;
+  }
+
+  /* Animated background gradient */
+  #celebrationScreen::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(255,64,129,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(233,30,99,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 0%, rgba(255,128,171,0.1) 0%, transparent 50%);
+    animation: bgPulse 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes bgPulse {
+    0% { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.05); }
   }
 
   #celebrationScreen h1 {
@@ -280,14 +296,25 @@
     font-size: clamp(2.5rem, 7vw, 4rem);
     color: #ff6b9d;
     margin-bottom: 1.5rem;
-    animation: shimmer 3s ease infinite;
-    background: linear-gradient(135deg, #ff6b9d, #ff4081, #ff80ab, #ff6b9d);
-    background-size: 300% 300%;
+    background: linear-gradient(135deg, #ff6b9d, #ff4081, #ffd54f, #ff80ab, #ff6b9d);
+    background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 20px rgba(255, 64, 129, 0.4));
+    filter: drop-shadow(0 0 25px rgba(255, 64, 129, 0.5));
     z-index: 2;
+    animation: titleShimmer 3s ease infinite, titleFloat 2.5s ease-in-out infinite;
+  }
+
+  @keyframes titleShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes titleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
   }
 
   #celebrationScreen .gif-container {
@@ -295,14 +322,25 @@
     height: min(350px, 60vh);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    border: 3px solid rgba(255, 64, 129, 0.3);
+    box-shadow: 0 0 30px rgba(255,64,129,0.3), 0 0 60px rgba(255,64,129,0.15), 0 20px 60px rgba(0,0,0,0.4);
+    border: 3px solid rgba(255, 64, 129, 0.4);
     z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #2d1b4e;
     position: relative;
+    animation: gifEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, gifGlow 3s ease-in-out 1s infinite alternate;
+  }
+
+  @keyframes gifEntrance {
+    0% { transform: scale(0.3) rotate(-5deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  @keyframes gifGlow {
+    0% { box-shadow: 0 0 30px rgba(255,64,129,0.3), 0 0 60px rgba(255,64,129,0.15), 0 20px 60px rgba(0,0,0,0.4); }
+    100% { box-shadow: 0 0 40px rgba(255,64,129,0.5), 0 0 80px rgba(255,64,129,0.25), 0 20px 60px rgba(0,0,0,0.4); }
   }
 
   #celebrationScreen .gif-container img {
@@ -324,14 +362,101 @@
     50% { transform: scale(1.15); }
   }
 
-  #celebrationScreen .love-msg {
-    margin-top: 1.5rem;
-    color: #ffcdd2;
-    font-size: clamp(1rem, 2.5vw, 1.3rem);
+  /* Emoji row at bottom */
+  #celebrationScreen .emoji-row {
+    margin-top: 1.2rem;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
     z-index: 2;
-    text-align: center;
-    line-height: 1.6;
-    padding: 0 1rem;
+    display: flex;
+    gap: 0.4rem;
+    animation: emojiEntrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both;
+  }
+
+  @keyframes emojiEntrance {
+    0% { transform: translateY(30px) scale(0); opacity: 0; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  #celebrationScreen .emoji-row span {
+    display: inline-block;
+    animation: emojiBounce 2s ease-in-out infinite;
+  }
+
+  #celebrationScreen .emoji-row span:nth-child(1) { animation-delay: 0s; }
+  #celebrationScreen .emoji-row span:nth-child(2) { animation-delay: 0.15s; }
+  #celebrationScreen .emoji-row span:nth-child(3) { animation-delay: 0.3s; }
+  #celebrationScreen .emoji-row span:nth-child(4) { animation-delay: 0.45s; }
+  #celebrationScreen .emoji-row span:nth-child(5) { animation-delay: 0.6s; }
+  #celebrationScreen .emoji-row span:nth-child(6) { animation-delay: 0.75s; }
+  #celebrationScreen .emoji-row span:nth-child(7) { animation-delay: 0.9s; }
+
+  @keyframes emojiBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    25% { transform: translateY(-8px) scale(1.15); }
+    50% { transform: translateY(0) scale(1); }
+  }
+
+  /* Floating emoji particles */
+  .celeb-float-emoji {
+    position: absolute;
+    font-size: 1.8rem;
+    z-index: 1;
+    pointer-events: none;
+    animation: floatUp linear forwards;
+    opacity: 0;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; transform: translateY(-10vh) scale(1) rotate(30deg); }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(-100vh) scale(0.5) rotate(360deg); opacity: 0; }
+  }
+
+  /* Burst rings */
+  .celeb-burst-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 64, 129, 0.5);
+    z-index: 1;
+    pointer-events: none;
+    animation: burstExpand 2s ease-out forwards;
+  }
+
+  @keyframes burstExpand {
+    0% { transform: scale(0); opacity: 0.8; }
+    100% { transform: scale(4); opacity: 0; }
+  }
+
+  /* Sparkle dots */
+  .celeb-sparkle {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #ffd54f;
+    z-index: 1;
+    pointer-events: none;
+    animation: sparklePop 1.5s ease-out forwards;
+  }
+
+  @keyframes sparklePop {
+    0% { transform: scale(0); opacity: 1; }
+    50% { transform: scale(2.5); opacity: 0.8; }
+    100% { transform: scale(0); opacity: 0; }
+  }
+
+  /* Confetti pieces */
+  .celeb-confetti {
+    position: absolute;
+    width: 8px; height: 8px;
+    z-index: 1;
+    pointer-events: none;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
   }
 
   /* ── Petal Rain Canvas ── */
@@ -389,6 +514,109 @@
   @media (hover: hover) and (pointer: fine) {
     #touchControls { display: none !important; }
   }
+
+  /* ── Landscape Mobile ── */
+  @media (max-height: 500px) and (orientation: landscape) {
+    #touchControls {
+      bottom: 0.5rem;
+      padding: 0 1rem;
+    }
+
+    .touch-btn {
+      width: 48px;
+      height: 48px;
+      font-size: 1.2rem;
+    }
+
+    .touch-btn.jump-btn {
+      width: 58px;
+      height: 58px;
+      font-size: 1.1rem;
+    }
+
+    .touch-group {
+      gap: 0.5rem;
+    }
+
+    #hud {
+      top: 0.4rem;
+    }
+
+    .hud-item {
+      padding: 0.3rem 0.8rem;
+      font-size: 0.85rem;
+    }
+
+    #startScreen h1 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+    }
+
+    #startScreen .subtitle {
+      font-size: clamp(0.8rem, 2vw, 1.2rem);
+      margin-top: 0.2rem;
+    }
+
+    #startScreen .start-btn {
+      margin-top: 1rem;
+      padding: 0.6rem 2rem;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+    }
+
+    #startScreen .controls-info {
+      margin-top: 0.8rem;
+      font-size: 0.7rem;
+      line-height: 1.5;
+    }
+
+    #gameOverScreen h2 {
+      font-size: 2rem;
+    }
+
+    #gameOverScreen p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    #proposalBox {
+      padding: 1.5rem 1.5rem;
+      max-width: 450px;
+    }
+
+    #proposalBox .rose-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    #proposalBox h2 {
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      margin-bottom: 0.5rem;
+    }
+
+    #proposalBox p {
+      font-size: clamp(0.8rem, 2vw, 0.95rem);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .proposal-buttons {
+      min-height: 60px;
+    }
+
+    #celebrationScreen h1 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin-bottom: 0.8rem;
+    }
+
+    #celebrationScreen .gif-container {
+      width: min(300px, 50vw);
+      height: min(200px, 50vh);
+    }
+
+    #celebrationScreen .emoji-row {
+      margin-top: 0.5rem;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+    }
+  }
 </style>
 </head>
 <body>
@@ -396,7 +624,7 @@
 <!-- Start Screen -->
 <div id="startScreen">
   <div class="hearts-bg" id="heartsBg"></div>
-  <h1>Romeo Mario</h1>
+  <h1>Mario's Run for Love</h1>
   <div class="subtitle">A Valentine's Quest for Love</div>
   <button class="start-btn" id="startBtn">Play</button>
   <div class="controls-info">
@@ -454,7 +682,15 @@
   <div class="gif-container" id="gifContainer">
     <img id="celebrationGif" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYW03NTE3anN5cHR3bjE3d2EyNjVwZzczcXI4M3Vlb25sM2puOWk2eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TIzBy9NNKcfVWugB9H/giphy.gif" alt="Celebration!" style="width:100%;height:100%;object-fit:cover;">
   </div>
-  <div class="love-msg">Forever starts now &#10084;&#65039;</div>
+  <div class="emoji-row">
+    <span>&#x1F496;</span>
+    <span>&#x1F389;</span>
+    <span>&#x1F970;</span>
+    <span>&#x1F48D;</span>
+    <span>&#x1F970;</span>
+    <span>&#x1F389;</span>
+    <span>&#x1F496;</span>
+  </div>
 </div>
 
 <script>
@@ -496,7 +732,7 @@ let W, H;
 let gameState = 'start';
 let cameraX = 0;
 let roses = 0;
-let lives = 5;
+let lives = 3;
 let player, platforms, hazards, collectibles, decorations, flagPole, princess;
 let keys = {};
 let animFrame = 0;
@@ -1322,162 +1558,469 @@ function drawPrincess() {
   const sy = princess.y;
   if (sx < -60 || sx > W + 60) return;
   const t = Date.now() * 0.002;
+  const breathe = Math.sin(t * 1.2) * 0.5;
 
   ctx.save();
   ctx.translate(sx + PLAYER_W / 2, sy + PLAYER_H);
 
-  ctx.shadowColor = '#ff80ab';
-  ctx.shadowBlur = 25;
-
-  // Dress
-  const dressGrad = ctx.createLinearGradient(0, -38, 0, 2);
-  dressGrad.addColorStop(0, '#ff80ab');
-  dressGrad.addColorStop(0.5, '#f06292');
-  dressGrad.addColorStop(1, '#ec407a');
-  ctx.fillStyle = dressGrad;
+  // Soft warm glow behind princess
+  const auraGrad = ctx.createRadialGradient(0, -30, 3, 0, -30, 45);
+  auraGrad.addColorStop(0, 'rgba(255, 200, 220, 0.18)');
+  auraGrad.addColorStop(0.6, 'rgba(255, 180, 200, 0.06)');
+  auraGrad.addColorStop(1, 'rgba(255, 180, 200, 0)');
+  ctx.fillStyle = auraGrad;
   ctx.beginPath();
-  ctx.moveTo(-6, -38);
-  ctx.lineTo(-18, 2);
-  ctx.quadraticCurveTo(-20, 5, -16, 5);
-  ctx.lineTo(16, 5);
-  ctx.quadraticCurveTo(20, 5, 18, 2);
-  ctx.lineTo(6, -38);
+  ctx.ellipse(0, -30, 45, 55, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // ── Gown (luxurious ball gown with layered skirt) ──
+  // Outer skirt layer
+  const gownGrad = ctx.createLinearGradient(0, -36, 0, 10);
+  gownGrad.addColorStop(0, '#fce4ec');
+  gownGrad.addColorStop(0.15, '#f48fb1');
+  gownGrad.addColorStop(0.4, '#ec407a');
+  gownGrad.addColorStop(0.7, '#d81b60');
+  gownGrad.addColorStop(1, '#c2185b');
+  ctx.fillStyle = gownGrad;
+  ctx.beginPath();
+  ctx.moveTo(-6, -36);
+  ctx.bezierCurveTo(-7, -30, -9, -24, -12, -16);
+  ctx.bezierCurveTo(-16, -6, -22, 2, -24, 6);
+  ctx.quadraticCurveTo(-23, 9, -18, 8);
+  ctx.quadraticCurveTo(-10, 6, -4, 9);
+  ctx.quadraticCurveTo(0, 11, 4, 9);
+  ctx.quadraticCurveTo(10, 6, 18, 8);
+  ctx.quadraticCurveTo(23, 9, 24, 6);
+  ctx.bezierCurveTo(22, 2, 16, -6, 12, -16);
+  ctx.bezierCurveTo(9, -24, 7, -30, 6, -36);
   ctx.closePath();
   ctx.fill();
 
-  // Dress details
-  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-  ctx.lineWidth = 1;
-  for (let i = 0; i < 3; i++) {
-    const dy = -28 + i * 12;
+  // Soft tulle overlay (transparent layer for depth)
+  ctx.fillStyle = 'rgba(252, 228, 236, 0.12)';
+  ctx.beginPath();
+  ctx.moveTo(-4, -32);
+  ctx.bezierCurveTo(-6, -22, -10, -8, -18, 5);
+  ctx.quadraticCurveTo(-10, 3, 0, 6);
+  ctx.quadraticCurveTo(-1, -10, -4, -32);
+  ctx.fill();
+
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+  ctx.beginPath();
+  ctx.moveTo(2, -34);
+  ctx.bezierCurveTo(5, -20, 9, -6, 16, 5);
+  ctx.quadraticCurveTo(8, 2, 2, 5);
+  ctx.quadraticCurveTo(1, -12, 2, -34);
+  ctx.fill();
+
+  // Gown fabric folds (subtle shadow lines)
+  ctx.strokeStyle = 'rgba(173, 20, 87, 0.15)';
+  ctx.lineWidth = 0.8;
+  for (let fi = -2; fi <= 2; fi++) {
     ctx.beginPath();
-    ctx.moveTo(-10 - i * 3, dy);
-    ctx.quadraticCurveTo(0, dy - 3, 10 + i * 3, dy);
+    const foldX = fi * 5;
+    ctx.moveTo(foldX, -28);
+    ctx.quadraticCurveTo(foldX + fi * 2, -10, foldX + fi * 3.5, 7);
     ctx.stroke();
   }
 
-  ctx.shadowBlur = 0;
+  // Delicate gold trim at hem
+  ctx.strokeStyle = 'rgba(255, 215, 0, 0.3)';
+  ctx.lineWidth = 0.8;
+  ctx.beginPath();
+  ctx.moveTo(-22, 7);
+  ctx.quadraticCurveTo(-14, 5, -4, 8);
+  ctx.quadraticCurveTo(0, 10, 4, 8);
+  ctx.quadraticCurveTo(14, 5, 22, 7);
+  ctx.stroke();
 
-  // Shoes
+  // Waist cinch — elegant gold belt
+  const beltGrad = ctx.createLinearGradient(-8, -30, 8, -30);
+  beltGrad.addColorStop(0, '#d4a017');
+  beltGrad.addColorStop(0.3, '#ffd54f');
+  beltGrad.addColorStop(0.5, '#ffe082');
+  beltGrad.addColorStop(0.7, '#ffd54f');
+  beltGrad.addColorStop(1, '#d4a017');
+  ctx.fillStyle = beltGrad;
+  drawRoundRect(-8, -29.5, 16, 3, 1.5);
+  ctx.fill();
+
+  // Small jewel at belt center
   ctx.fillStyle = '#e91e63';
-  drawRoundRect(-12, 2, 8, 4, 2);
+  ctx.beginPath();
+  ctx.arc(0, -28, 2, 0, Math.PI * 2);
   ctx.fill();
-  drawRoundRect(4, 2, 8, 4, 2);
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.beginPath();
+  ctx.arc(-0.5, -28.8, 0.7, 0, Math.PI * 2);
   ctx.fill();
 
-  // Bodice
-  ctx.fillStyle = '#f48fb1';
-  drawRoundRect(-8, -42, 16, 8, 3);
+  // Dainty shoes peeking out
+  ctx.fillStyle = '#d4a017';
+  ctx.beginPath();
+  ctx.ellipse(-7, 8, 4, 2, -0.1, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(7, 8, 4, 2, 0.1, 0, Math.PI * 2);
   ctx.fill();
 
-  // Head
-  ctx.fillStyle = '#ffccbc';
+  // ── Bodice (fitted, elegant) ──
+  const bodiceGrad = ctx.createLinearGradient(0, -44, 0, -30);
+  bodiceGrad.addColorStop(0, '#fce4ec');
+  bodiceGrad.addColorStop(0.4, '#f8bbd0');
+  bodiceGrad.addColorStop(1, '#f48fb1');
+  ctx.fillStyle = bodiceGrad;
   ctx.beginPath();
-  ctx.ellipse(0, -50, 11, 12, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Hair
-  ctx.fillStyle = '#f9a825';
-  ctx.beginPath();
-  ctx.ellipse(0, -56, 13, 10, 0, Math.PI, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(-11, -48, 5, 12, 0.2, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(11, -48, 5, 12, -0.2, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Crown
-  ctx.fillStyle = '#ffd54f';
-  ctx.beginPath();
-  ctx.moveTo(-8, -62);
-  ctx.lineTo(-6, -58);
-  ctx.lineTo(-3, -64);
-  ctx.lineTo(0, -59);
-  ctx.lineTo(3, -64);
-  ctx.lineTo(6, -58);
-  ctx.lineTo(8, -62);
-  ctx.lineTo(8, -57);
-  ctx.lineTo(-8, -57);
+  ctx.moveTo(-6, -36);
+  ctx.bezierCurveTo(-8, -40, -8, -43, -7, -44);
+  ctx.lineTo(7, -44);
+  ctx.bezierCurveTo(8, -43, 8, -40, 6, -36);
   ctx.closePath();
   ctx.fill();
 
-  // Crown gems
-  ctx.fillStyle = '#ff1744';
+  // Subtle neckline with lace edge
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.lineWidth = 0.8;
   ctx.beginPath();
-  ctx.arc(0, -60, 2, 0, Math.PI * 2);
+  ctx.moveTo(-7, -44);
+  ctx.quadraticCurveTo(-2, -41.5, 0, -43);
+  ctx.quadraticCurveTo(2, -41.5, 7, -44);
+  ctx.stroke();
+
+  // Delicate shoulder straps
+  ctx.fillStyle = '#f8bbd0';
+  ctx.beginPath();
+  ctx.ellipse(-9, -43, 4, 2.5, -0.3, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = '#e91e63';
   ctx.beginPath();
-  ctx.arc(-5, -60, 1.5, 0, Math.PI * 2);
-  ctx.arc(5, -60, 1.5, 0, Math.PI * 2);
+  ctx.ellipse(9, -43, 4, 2.5, 0.3, 0, Math.PI * 2);
   ctx.fill();
 
-  // Eyes
-  ctx.fillStyle = '#5d4037';
-  ctx.beginPath();
-  ctx.ellipse(-4, -50, 2.5, 3, 0, 0, Math.PI * 2);
-  ctx.ellipse(4, -50, 2.5, 3, 0, 0, Math.PI * 2);
+  // ── Neck (slender) ──
+  const skinTone = '#fdd9b5';
+  const skinShadow = '#f5c6a0';
+  ctx.fillStyle = skinTone;
+  drawRoundRect(-2.5, -48, 5, 5, 2);
   ctx.fill();
 
+  // Gold necklace chain
+  ctx.strokeStyle = '#e6c200';
+  ctx.lineWidth = 0.7;
+  ctx.beginPath();
+  ctx.arc(0, -45.5, 4.5, 0.3, Math.PI - 0.3);
+  ctx.stroke();
+  // Small diamond pendant
   ctx.fillStyle = '#fff';
   ctx.beginPath();
-  ctx.arc(-3, -51, 1.2, 0, Math.PI * 2);
-  ctx.arc(5, -51, 1.2, 0, Math.PI * 2);
+  ctx.moveTo(0, -41.5);
+  ctx.lineTo(-1.5, -40);
+  ctx.lineTo(0, -38);
+  ctx.lineTo(1.5, -40);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,215,0,0.6)';
+  ctx.lineWidth = 0.5;
+  ctx.stroke();
+
+  // ── Head (soft, natural proportions) ──
+  ctx.fillStyle = skinTone;
+  ctx.beginPath();
+  ctx.ellipse(0, -55, 10, 11, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // Subtle jaw shadow for depth
+  ctx.fillStyle = skinShadow;
+  ctx.beginPath();
+  ctx.ellipse(0, -48, 7, 4, 0, 0, Math.PI);
+  ctx.globalAlpha = 0.15;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // ── Hair (rich, flowing locks) ──
+  const hairGrad = ctx.createLinearGradient(-14, -70, 10, -45);
+  hairGrad.addColorStop(0, '#4a2c2a');
+  hairGrad.addColorStop(0.25, '#6d4c41');
+  hairGrad.addColorStop(0.5, '#5d4037');
+  hairGrad.addColorStop(0.75, '#4e342e');
+  hairGrad.addColorStop(1, '#3e2723');
+  ctx.fillStyle = hairGrad;
+
+  // Top volume
+  ctx.beginPath();
+  ctx.ellipse(0, -63, 13, 10, 0, Math.PI, Math.PI * 2);
   ctx.fill();
 
-  // Eyelashes
+  // Left flowing locks
+  ctx.beginPath();
+  ctx.moveTo(-12, -59);
+  ctx.bezierCurveTo(-15, -52, -14, -42, -13, -36);
+  ctx.bezierCurveTo(-12, -32, -10, -30, -9, -32);
+  ctx.bezierCurveTo(-9, -38, -10, -48, -12, -59);
+  ctx.fill();
+
+  // Right flowing locks
+  ctx.beginPath();
+  ctx.moveTo(12, -59);
+  ctx.bezierCurveTo(15, -52, 14, -42, 13, -36);
+  ctx.bezierCurveTo(12, -32, 10, -30, 9, -32);
+  ctx.bezierCurveTo(9, -38, 10, -48, 12, -59);
+  ctx.fill();
+
+  // Back hair (wider, behind shoulders) visible strands
+  ctx.beginPath();
+  ctx.moveTo(-11, -56);
+  ctx.bezierCurveTo(-13, -44, -15, -34, -14, -28);
+  ctx.bezierCurveTo(-13, -26, -11, -28, -10, -34);
+  ctx.bezierCurveTo(-10, -42, -11, -50, -11, -56);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(11, -56);
+  ctx.bezierCurveTo(13, -44, 15, -34, 14, -28);
+  ctx.bezierCurveTo(13, -26, 11, -28, 10, -34);
+  ctx.bezierCurveTo(10, -42, 11, -50, 11, -56);
+  ctx.fill();
+
+  // Subtle hair highlights (light reflection)
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.07)';
+  ctx.beginPath();
+  ctx.ellipse(-4, -66, 5, 3, -0.4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(3, -64, 3, 2, 0.2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // ── Tiara (delicate, refined) ──
+  // Gold base band
+  const tiaraGrad = ctx.createLinearGradient(-9, -66, 9, -66);
+  tiaraGrad.addColorStop(0, '#c9a800');
+  tiaraGrad.addColorStop(0.3, '#ffd54f');
+  tiaraGrad.addColorStop(0.5, '#ffe082');
+  tiaraGrad.addColorStop(0.7, '#ffd54f');
+  tiaraGrad.addColorStop(1, '#c9a800');
+  ctx.fillStyle = tiaraGrad;
+  ctx.beginPath();
+  ctx.ellipse(0, -66, 9, 2.5, 0, Math.PI, Math.PI * 2);
+  ctx.fill();
+
+  // Tiara filigree arches
+  ctx.strokeStyle = '#ffd54f';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(-7, -67);
+  ctx.quadraticCurveTo(-4, -73, 0, -74);
+  ctx.quadraticCurveTo(4, -73, 7, -67);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(-5, -67.5);
+  ctx.quadraticCurveTo(-2, -71.5, 0, -72);
+  ctx.quadraticCurveTo(2, -71.5, 5, -67.5);
+  ctx.stroke();
+
+  // Center gem (ruby)
+  ctx.fillStyle = '#d50000';
+  ctx.beginPath();
+  ctx.arc(0, -72, 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.beginPath();
+  ctx.arc(-0.6, -72.8, 0.6, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Side gems
+  ctx.fillStyle = '#e8eaf6';
+  ctx.beginPath();
+  ctx.arc(-4, -70, 1.2, 0, Math.PI * 2);
+  ctx.arc(4, -70, 1.2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // ── Eyes (natural, expressive — not anime) ──
+  // Eye whites (almond shaped)
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.ellipse(-4, -56, 3, 2.5, -0.05, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(4, -56, 3, 2.5, 0.05, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Iris (warm brown)
+  const irisGrad = ctx.createRadialGradient(-4, -55.5, 0.5, -4, -55.5, 2.2);
+  irisGrad.addColorStop(0, '#5d4037');
+  irisGrad.addColorStop(0.5, '#6d4c41');
+  irisGrad.addColorStop(1, '#4e342e');
+  ctx.fillStyle = irisGrad;
+  ctx.beginPath();
+  ctx.arc(-4, -55.5, 2, 0, Math.PI * 2);
+  ctx.fill();
+  const irisGrad2 = ctx.createRadialGradient(4, -55.5, 0.5, 4, -55.5, 2.2);
+  irisGrad2.addColorStop(0, '#5d4037');
+  irisGrad2.addColorStop(0.5, '#6d4c41');
+  irisGrad2.addColorStop(1, '#4e342e');
+  ctx.fillStyle = irisGrad2;
+  ctx.beginPath();
+  ctx.arc(4, -55.5, 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Pupils
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.arc(-4, -55.5, 1, 0, Math.PI * 2);
+  ctx.arc(4, -55.5, 1, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Single natural eye sparkle
+  ctx.fillStyle = 'rgba(255,255,255,0.8)';
+  ctx.beginPath();
+  ctx.arc(-3.3, -56.3, 0.7, 0, Math.PI * 2);
+  ctx.arc(4.7, -56.3, 0.7, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Eyeliner (thin, elegant)
+  ctx.strokeStyle = '#3e2723';
+  ctx.lineWidth = 0.8;
+  ctx.lineCap = 'round';
+  // Upper lid line — left
+  ctx.beginPath();
+  ctx.moveTo(-7, -56.5);
+  ctx.quadraticCurveTo(-4, -59, -1, -57);
+  ctx.stroke();
+  // Upper lid line — right
+  ctx.beginPath();
+  ctx.moveTo(7, -56.5);
+  ctx.quadraticCurveTo(4, -59, 1, -57);
+  ctx.stroke();
+
+  // Subtle lower lash line
+  ctx.strokeStyle = 'rgba(62, 39, 35, 0.3)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(-6.5, -55);
+  ctx.quadraticCurveTo(-4, -53.5, -1.5, -55);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(6.5, -55);
+  ctx.quadraticCurveTo(4, -53.5, 1.5, -55);
+  ctx.stroke();
+
+  // Eyebrows (natural, groomed arches)
   ctx.strokeStyle = '#5d4037';
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(-6.5, -52); ctx.lineTo(-7.5, -54);
-  ctx.moveTo(6.5, -52); ctx.lineTo(7.5, -54);
+  ctx.moveTo(-6.5, -59.5);
+  ctx.quadraticCurveTo(-4, -61, -1.5, -59.8);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(6.5, -59.5);
+  ctx.quadraticCurveTo(4, -61, 1.5, -59.8);
   ctx.stroke();
 
-  // Blush
-  ctx.fillStyle = 'rgba(255, 105, 135, 0.35)';
+  // Soft blush (natural rosy glow)
+  ctx.fillStyle = 'rgba(236, 64, 122, 0.15)';
   ctx.beginPath();
-  ctx.ellipse(-8, -47, 4, 2.5, 0, 0, Math.PI * 2);
-  ctx.ellipse(8, -47, 4, 2.5, 0, 0, Math.PI * 2);
+  ctx.ellipse(-7.5, -52.5, 3, 2, -0.1, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(7.5, -52.5, 3, 2, 0.1, 0, Math.PI * 2);
   ctx.fill();
 
-  // Nose
-  ctx.fillStyle = '#ffab91';
+  // Nose (delicate, subtle)
+  ctx.strokeStyle = skinShadow;
+  ctx.lineWidth = 0.8;
   ctx.beginPath();
-  ctx.ellipse(0, -48, 2, 2, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Smile
-  ctx.strokeStyle = '#c62828';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.arc(0, -45, 4, 0.1, Math.PI - 0.1);
+  ctx.moveTo(-0.5, -53);
+  ctx.quadraticCurveTo(-1, -51, 0, -50);
+  ctx.quadraticCurveTo(1, -51, 0.5, -53);
   ctx.stroke();
 
-  // Arms
-  ctx.fillStyle = '#ffccbc';
-  ctx.save();
-  ctx.translate(-9, -38);
-  ctx.rotate(Math.sin(t) * 0.15 - 0.3);
-  drawRoundRect(-3, 0, 6, 14, 3);
+  // Lips (soft, natural with cupid's bow)
+  const lipGrad = ctx.createLinearGradient(0, -49, 0, -46);
+  lipGrad.addColorStop(0, '#e57373');
+  lipGrad.addColorStop(0.5, '#ef5350');
+  lipGrad.addColorStop(1, '#d32f2f');
+  ctx.fillStyle = lipGrad;
+  ctx.beginPath();
+  ctx.moveTo(-3.5, -48);
+  ctx.quadraticCurveTo(-1.5, -49.5, 0, -48.8);
+  ctx.quadraticCurveTo(1.5, -49.5, 3.5, -48);
+  ctx.quadraticCurveTo(2, -46, 0, -45.8);
+  ctx.quadraticCurveTo(-2, -46, -3.5, -48);
   ctx.fill();
+  // Lip shine
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+  ctx.beginPath();
+  ctx.ellipse(0, -48.5, 1.5, 0.5, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Subtle smile line
+  ctx.strokeStyle = 'rgba(211, 47, 47, 0.3)';
+  ctx.lineWidth = 0.4;
+  ctx.beginPath();
+  ctx.moveTo(-3.5, -47.5);
+  ctx.quadraticCurveTo(0, -45.5, 3.5, -47.5);
+  ctx.stroke();
+
+  // ── Arms (graceful, natural skin) ──
+  // Left arm
+  ctx.save();
+  ctx.translate(-10, -42);
+  ctx.rotate(Math.sin(t) * 0.08 - 0.2);
+  ctx.fillStyle = skinTone;
+  drawRoundRect(-2, 3, 4.5, 11, 2);
+  ctx.fill();
+  // Wrist
+  ctx.fillStyle = skinTone;
+  ctx.beginPath();
+  ctx.arc(0.25, 15, 3, 0, Math.PI * 2);
+  ctx.fill();
+  // Gold bracelet
+  ctx.strokeStyle = '#ffd54f';
+  ctx.lineWidth = 0.8;
+  ctx.beginPath();
+  ctx.arc(0.25, 13, 3, 0, Math.PI * 2);
+  ctx.stroke();
   ctx.restore();
 
+  // Right arm
   ctx.save();
-  ctx.translate(9, -38);
-  ctx.rotate(-Math.sin(t) * 0.15 + 0.3);
-  drawRoundRect(-3, 0, 6, 14, 3);
+  ctx.translate(10, -42);
+  ctx.rotate(-Math.sin(t) * 0.08 + 0.2);
+  ctx.fillStyle = skinTone;
+  drawRoundRect(-2, 3, 4.5, 11, 2);
   ctx.fill();
+  ctx.fillStyle = skinTone;
+  ctx.beginPath();
+  ctx.arc(0.25, 15, 3, 0, Math.PI * 2);
+  ctx.fill();
+  // Gold bracelet
+  ctx.strokeStyle = '#ffd54f';
+  ctx.lineWidth = 0.8;
+  ctx.beginPath();
+  ctx.arc(0.25, 13, 3, 0, Math.PI * 2);
+  ctx.stroke();
   ctx.restore();
 
-  // Floating hearts
+  // ── Floating hearts (subtle, gentle) ──
   for (let i = 0; i < 3; i++) {
-    const hx = Math.sin(t + i * 2) * 20;
-    const hy = -65 - i * 12 - Math.sin(t * 1.5 + i) * 5;
-    const alpha = 0.3 + 0.2 * Math.sin(t + i);
-    ctx.fillStyle = `rgba(255, 64, 129, ${alpha})`;
-    drawMiniHeart(hx, hy, 4 + i);
+    const hx = Math.sin(t * 0.8 + i * 2.1) * 20;
+    const hy = -78 - i * 12 - Math.sin(t * 1.2 + i) * 4;
+    const alpha = 0.15 + 0.12 * Math.sin(t + i);
+    ctx.fillStyle = `rgba(236, 64, 122, ${alpha})`;
+    drawMiniHeart(hx, hy, 2.5 + i * 0.5);
+  }
+
+  // Gentle gold sparkles
+  for (let i = 0; i < 3; i++) {
+    const sx2 = Math.sin(t * 1.1 + i * 1.5) * 18;
+    const sy2 = -25 - i * 12 + Math.cos(t * 0.7 + i) * 6;
+    const sa = 0.1 + 0.15 * Math.sin(t * 1.8 + i * 0.9);
+    ctx.fillStyle = `rgba(255, 215, 0, ${sa})`;
+    ctx.beginPath();
+    const ss = 1.5 + Math.sin(t * 2.5 + i) * 0.5;
+    ctx.moveTo(sx2, sy2 - ss);
+    ctx.lineTo(sx2 + ss * 0.3, sy2);
+    ctx.lineTo(sx2, sy2 + ss);
+    ctx.lineTo(sx2 - ss * 0.3, sy2);
+    ctx.closePath();
+    ctx.fill();
   }
 
   ctx.restore();
@@ -1904,7 +2447,85 @@ function startCelebration() {
   setTimeout(() => {
     celebrationScreen.style.display = 'flex';
     loadHugGif();
+    startCelebrationEffects();
   }, 1500);
+}
+
+function startCelebrationEffects() {
+  const screen = celebrationScreen;
+  const emojis = ['&#x1F496;','&#x1F495;','&#x2728;','&#x1F31F;','&#x1F338;','&#x1F339;','&#x1F48B;','&#x1F49D;','&#x1F389;','&#x1F38A;','&#x1F970;','&#x1F48C;'];
+
+  // Spawn floating emojis continuously
+  let floatInterval = setInterval(() => {
+    if (gameState !== 'celebration') { clearInterval(floatInterval); return; }
+    const el = document.createElement('div');
+    el.className = 'celeb-float-emoji';
+    el.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = (Math.random() * 90 + 5) + '%';
+    el.style.bottom = '-5%';
+    el.style.fontSize = (1.2 + Math.random() * 1.4) + 'rem';
+    el.style.animationDuration = (4 + Math.random() * 4) + 's';
+    el.style.animationDelay = '0s';
+    screen.appendChild(el);
+    setTimeout(() => el.remove(), 9000);
+  }, 400);
+
+  // Burst rings every few seconds
+  let burstInterval = setInterval(() => {
+    if (gameState !== 'celebration') { clearInterval(burstInterval); return; }
+    const ring = document.createElement('div');
+    ring.className = 'celeb-burst-ring';
+    const size = 40 + Math.random() * 40;
+    ring.style.width = size + 'px';
+    ring.style.height = size + 'px';
+    ring.style.left = (Math.random() * 80 + 10) + '%';
+    ring.style.top = (Math.random() * 80 + 10) + '%';
+    const colors = ['rgba(255,64,129,0.4)','rgba(255,215,0,0.4)','rgba(233,30,99,0.3)','rgba(255,128,171,0.4)'];
+    ring.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
+    screen.appendChild(ring);
+    setTimeout(() => ring.remove(), 2200);
+  }, 1800);
+
+  // Sparkle dots
+  let sparkleInterval = setInterval(() => {
+    if (gameState !== 'celebration') { clearInterval(sparkleInterval); return; }
+    for (let i = 0; i < 3; i++) {
+      const sp = document.createElement('div');
+      sp.className = 'celeb-sparkle';
+      sp.style.left = (Math.random() * 96 + 2) + '%';
+      sp.style.top = (Math.random() * 96 + 2) + '%';
+      const sparkColors = ['#ffd54f','#ff80ab','#fff','#ff4081','#e040fb'];
+      sp.style.background = sparkColors[Math.floor(Math.random() * sparkColors.length)];
+      sp.style.animationDelay = (Math.random() * 0.5) + 's';
+      screen.appendChild(sp);
+      setTimeout(() => sp.remove(), 2000);
+    }
+  }, 600);
+
+  // Confetti burst on entry + repeating
+  function spawnConfetti() {
+    if (gameState !== 'celebration') return;
+    for (let i = 0; i < 25; i++) {
+      const c = document.createElement('div');
+      c.className = 'celeb-confetti';
+      c.style.left = (Math.random() * 100) + '%';
+      c.style.top = '-2%';
+      c.style.width = (5 + Math.random() * 6) + 'px';
+      c.style.height = (5 + Math.random() * 6) + 'px';
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      const confColors = ['#ff4081','#ffd54f','#7c4dff','#40c4ff','#ff6e40','#69f0ae','#ff80ab','#e040fb'];
+      c.style.background = confColors[Math.floor(Math.random() * confColors.length)];
+      c.style.animationDuration = (2.5 + Math.random() * 3) + 's';
+      c.style.animationDelay = (Math.random() * 1.5) + 's';
+      screen.appendChild(c);
+      setTimeout(() => c.remove(), 6000);
+    }
+  }
+  spawnConfetti();
+  let confettiInterval = setInterval(() => {
+    if (gameState !== 'celebration') { clearInterval(confettiInterval); return; }
+    spawnConfetti();
+  }, 5000);
 }
 
 function loadHugGif() {
@@ -2065,9 +2686,9 @@ function startGame() {
   }
 
   roses = 0;
-  lives = 5;
+  lives = 3;
   roseCountEl.textContent = '0';
-  lifeCountEl.textContent = '5';
+  lifeCountEl.textContent = '3';
   endSequencePhase = 0;
   endSequenceTimer = 0;
   invincibleTimer = 0;
